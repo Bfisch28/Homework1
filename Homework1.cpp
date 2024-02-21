@@ -5,7 +5,7 @@
 
 using namespace std;
 
-int main() {
+void q1() {
     // Variables to store user input
     double emptyWeight, emptyWeightMoment;
     int numFrontSeatOccupants, numRearSeatOccupants;
@@ -140,7 +140,9 @@ int main() {
     // Calculate and output the adjusted center of gravity (CG) location
     centerOfGravity = totalMoment / totalWeight;
     cout << "Adjusted Center of Gravity (CG): " << centerOfGravity << " inches" << endl;
+}
 
-
+int main() {
+    q1();
     return 0;
 }
