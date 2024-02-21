@@ -1,20 +1,74 @@
-// Homework1.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
 
-int main()
-{
-    std::cout << "Hello World!\n";
+using namespace std;
+
+int main() {
+    // Variables to store user input
+    double emptyWeight, emptyWeightMoment;
+    int numFrontSeatOccupants, numRearSeatOccupants;
+    double frontSeatWeight, rearSeatWeight, baggageWeight;
+    double frontSeatArm, rearSeatArm, fuelWeightsPerGallon, fuelTankArm, baggageMomentArm;
+    int gallonsOfUsableFuel;
+
+    // Prompt user for input and store in variables
+    cout << "Enter airplane empty weight (pounds): ";
+    cin >> emptyWeight;
+
+    cout << "Enter airplane empty-weight moment (pounds-inches): ";
+    cin >> emptyWeightMoment;
+
+    cout << "Enter the number of front seat occupants: ";
+    cin >> numFrontSeatOccupants;
+
+    cout << "Enter weight of each front seat occupant (pounds): ";
+    cin >> frontSeatWeight;
+
+    cout << "Enter front seat moment arm (inches): ";
+    cin >> frontSeatArm;
+
+    cout << "Enter the number of rear seat occupants: ";
+    cin >> numRearSeatOccupants;
+
+    cout << "Enter weight of each rear seat occupant (pounds): ";
+    cin >> rearSeatWeight;
+
+    cout << "Enter rear seat moment arm (inches): ";
+    cin >> rearSeatArm;
+
+    cout << "Enter the number of gallons of usable fuel (gallons): ";
+    cin >> gallonsOfUsableFuel;
+
+    cout << "Enter usable fuel weights per gallon (pounds): ";
+    cin >> fuelWeightsPerGallon;
+
+    cout << "Enter fuel tank moment arm (inches): ";
+    cin >> fuelTankArm;
+
+    cout << "Enter baggage weight (pounds): ";
+    cin >> baggageWeight;
+
+    cout << "Enter baggage moment arm (inches): ";
+    cin >> baggageMomentArm;
+
+    // Calculating gross weight and moment
+    double totalWeight = emptyWeight + numFrontSeatOccupants * frontSeatWeight +
+        numRearSeatOccupants * rearSeatWeight +
+        gallonsOfUsableFuel * fuelWeightsPerGallon +
+        baggageWeight;
+
+    double totalMoment = emptyWeightMoment +
+        numFrontSeatOccupants * frontSeatWeight * frontSeatArm +
+        numRearSeatOccupants * rearSeatWeight * rearSeatArm +
+        gallonsOfUsableFuel * fuelWeightsPerGallon * fuelTankArm +
+        baggageWeight * baggageMomentArm;
+
+    // Output the results
+    cout << "\nTotal Gross Weight: " << totalWeight << " pounds" << endl;
+    cout << "Total Moment: " << totalMoment << " pound-inches" << endl;
+
+    // Calculate and output the center of gravity (CG) location
+    double centerOfGravity = totalMoment / totalWeight;
+    cout << "Center of Gravity (CG): " << centerOfGravity << " inches" << endl;
+
+    return 0;
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
