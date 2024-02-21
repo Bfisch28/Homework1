@@ -70,12 +70,12 @@ int main() {
     }
 
     // Parsing comma-separated string of rear seat occupant weights
-    stringstream ss(rearSeatWeightsStr);
+    stringstream ss2(rearSeatWeightsStr);
     vector<double> rearSeatWeights;
-    double weight;
-    while (getline(ss, rearSeatWeightsStr, ',')) {
-        stringstream(rearSeatWeightsStr) >> weight;
-        rearSeatWeights.push_back(weight);
+    double weightrear;
+    while (getline(ss2, rearSeatWeightsStr, ',')) {
+        stringstream(rearSeatWeightsStr) >> weightrear;
+        rearSeatWeights.push_back(weightrear);
     }
 
     // Calculating total weight of front seat occupants
