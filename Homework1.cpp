@@ -107,12 +107,40 @@ int main() {
     // Check if the gross weight is within the maximum allowable gross weight limit
     if (totalWeight > 2950) {
         cout << "Warning: Gross weight exceeds maximum allowable gross weight!" << endl;
+        double fueladjustment = (totalWeight - 2950) / fuelWeightsPerGallon;
+        cout << "Fuel Drain needed: " << abs(fueladjustment) << " gallons" << endl;
+        if (fueladjustment > gallonsOfUsableFuel) {
+            cout << "Impossible to make weight with fuel drain" << endl;
+            exit(1);
+        }
+        gallonsOfUsableFuel -= fueladjustment;
+        totalWeight = 2950;
     }
 
-    // Check if the center of gravity (C.G.) location is within the forward and aft C.G. limits
+    // Check if the center of gravity (C.G.) location is within the forward and aft C.G. limits, this might be wrong
     if (centerOfGravity < 82.1 || centerOfGravity > 84.7) {
         cout << "Warning: Center of Gravity (C.G.) location is out of design limits!" << endl;
+        double adjustment = (centerOfGravity < 82.1) ? (82.1 - centerOfGravity) : (centerOfGravity - 84.7);
+        double adjustmentFuel = adjustment * totalWeight / fuelTankArm;
+        cout << "Fuel adjustment needed: " << adjustmentFuel << " gallons" << endl;
+        gallonsOfUsableFuel += adjustmentFuel;
+        totalWeight += adjustmentFuel * fuelWeightsPerGallon;
     }
+    // Recalculate total moment
+    totalMoment = emptyWeightMoment +
+        totalFrontSeatWeight * frontSeatArm +
+        numRearSeatOccupants * totalrearSeatWeight * rearSeatArm +
+        gallonsOfUsableFuel * fuelWeightsPerGallon * fuelTankArm +
+        baggageWeight * baggageMomentArm;
+
+    // Output the adjusted results
+    cout << "\nAdjusted Total Gross Weight: " << totalWeight << " pounds" << endl;
+    cout << "Adjusted Total Moment: " << totalMoment << " pound-inches" << endl;
+
+    // Calculate and output the adjusted center of gravity (CG) location
+    centerOfGravity = totalMoment / totalWeight;
+    cout << "Adjusted Center of Gravity (CG): " << centerOfGravity << " inches" << endl;
+
 
     return 0;
 }
