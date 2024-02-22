@@ -2,6 +2,7 @@
 #include <sstream>
 #include <vector>
 #include <string>
+#include <map>
 
 using namespace std;
 
@@ -140,6 +141,14 @@ void q1() {
     // Calculate and output the adjusted center of gravity (CG) location
     centerOfGravity = totalMoment / totalWeight;
     cout << "Adjusted Center of Gravity (CG): " << centerOfGravity << " inches" << endl;
+}
+
+void q2() {
+    map<string, map<string, int>> flights;
+    // Populate the map with flights
+    flights["SCE"]["PHL"] = 160;
+    flights["SCE"]["ORD"] = 640;
+    flights["SCE"]["EWR"] = 220;
 }
 
 int main() {
