@@ -156,6 +156,7 @@ public:
     };
 
     int getDistance(const string& origin, const string& destination) const {
+        cout << "Getting distance between " << origin << " and " << destination << endl; // Debug line
         // Check if the pair is in the map
         auto it = distanceMap.find({ origin, destination });
         if (it != distanceMap.end()) {
@@ -165,6 +166,7 @@ public:
             return 0; // Return 0 if pair not found
         }
     }
+
 };
 
 
