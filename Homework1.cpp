@@ -5,7 +5,7 @@
 #include <map>
 
 using namespace std;
-
+//Question 1
 void q1() {
     // Variables to store user input
     double emptyWeight, emptyWeightMoment;
@@ -143,15 +143,195 @@ void q1() {
     cout << "Adjusted Center of Gravity (CG): " << centerOfGravity << " inches" << endl;
 }
 
-void q2() {
-    map<string, map<string, int>> flights;
-    // Populate the map with flights
-    flights["SCE"]["PHL"] = 160;
-    flights["SCE"]["ORD"] = 640;
-    flights["SCE"]["EWR"] = 220;
+//Question 2
+// Container to store flight distances
+class FlightContainer {
+public:
+    int getDistance(const string& origin, const string& destination) const {
+        if (origin == "SCE" && destination == "PHL") return 160;
+        else if (origin == "SCE" && destination == "ORD") return 640;
+        else if (origin == "SCE" && destination == "EWR") return 220;
+        else return 0; // Not found
+    }
+};
+
+
+//Question 3
+class Plane {
+private:
+    double pos;
+    double vel;
+    double distance;
+    bool at_SCE;
+    string origin;
+    string destination;
+    FlightContainer& flights;
+
+public:
+    Plane(const string& from, const string& to, FlightContainer& flightContainer)
+        : pos(0), vel(0), distance(0), at_SCE(true), origin(from), destination(to), flights(flightContainer) {
+        distance = flights.getDistance(origin, destination);
+        cout << "Plane Created at " << this << endl;
+    }
+
+    ~Plane() {
+        cout << "Plane Destroyed" << endl;
+    }
+
+    void operate(double dt) {
+        double time_to_destination = distance / vel * 3600; // Convert velocity from mph to miles per second
+        if (time_to_destination > dt) {
+            pos += vel * dt;
+            dt = 0;
+        }
+        else {
+            pos = distance;
+            dt -= time_to_destination;
+            at_SCE = !at_SCE;
+        }
+
+        if (at_SCE) {
+            // Take off from SCE
+            cout << "Taking off from SCE..." << endl;
+            // Other operations...
+        }
+        else {
+            // Land at SCE
+            cout << "Landing at SCE..." << endl;
+            // Other operations...
+        }
+    }
+
+    double getPos() const { return pos; }
+    string getOrigin() const { return origin; }
+    string getDestination() const { return destination; }
+    bool getAtSCE() const { return at_SCE; }
+    double getVel() const { return vel; }
+    void setVel(double v) { vel = v; }
+};
+
+//Question 6
+// Pilot class
+class Pilot {
+private:
+    string name;
+    Plane* myPlane;
+
+public:
+    Pilot(const string& n, Plane* plane) : name(n), myPlane(plane) {
+        cout << "Pilot " << name << " at the gate, ready to board the plane. Plane address: " << myPlane << endl;
+    }
+
+    ~Pilot() {
+        cout << "Pilot " << name << " out of the plane." << endl;
+    }
+
+    string getName() const { return name; }
+};
+
+int q7() {
+    FlightContainer flights;
+    double speed = 450; // Speed in mph
+    int timestep = 50; // Time step in seconds
+    int max_iterations = 1500; // Maximum number of iterations
+
+    // Instantiate Plane object using old C/CPP-style pointer
+    Plane* myPlane = new Plane("SCE", "PHL", flights);
+    myPlane->setVel(speed);
+
+    // Instantiate pilots using old C/CPP-style pointer
+    Pilot* pilot1 = new Pilot("Pilot-in-Command", myPlane);
+    Pilot* pilot2 = new Pilot("Co-Pilot", myPlane);
+
+    // Variable to track the current controlling pilot
+    Pilot* currentPilot = pilot1;
+
+    for (int i = 0; i < max_iterations; ++i) {
+        cout << "Pilot: " << currentPilot->getName() << ", Plane Address: " << myPlane << ", Pilot Address: " << currentPilot << endl;
+
+        myPlane->operate(timestep);
+
+        if (myPlane->getAtSCE()) {
+            cout << "Plane is at SCE, Plane Address: " << myPlane << endl;
+
+            // Switching pilots
+            if (currentPilot == pilot1) {
+                currentPilot = pilot2;
+            }
+            else {
+                currentPilot = pilot1;
+            }
+
+            cout << "Switching to Pilot: " << currentPilot->getName() << ", Plane Address: " << myPlane << ", Pilot Address: " << currentPilot << endl;
+        }
+
+        cout << "Plane position: " << myPlane->getPos() << " miles" << endl;
+    }
+
+    // Clean up memory
+    delete pilot1;
+    delete pilot2;
+    delete myPlane;
+
+    return 0;
+
+};
+
+int q8() {
+    FlightContainer flights;
+    double speed = 450; // Speed in mph
+    int timestep = 50; // Time step in seconds
+    int max_iterations = 1500; // Maximum number of iterations
+
+    Plane myPlane("SCE", "PHL", flights);
+    myPlane.setVel(speed);
+
+    for (int i = 0; i < max_iterations; ++i) {
+        myPlane.operate(timestep);
+
+        cout << "Plane position: " << myPlane.getPos() << " miles" << endl;
+    }
+
+    Pilot pilot1("John", &myPlane);
+    Pilot pilot2("Doe", &myPlane);
+
+    for (int i = 0; i < max_iterations; ++i) {
+        if (i % 2 == 0) {
+            cout << "Pilot " << pilot1.getName() << " controlling the plane. Plane address: " << &myPlane << endl;
+        }
+        else {
+            cout << "Pilot " << pilot2.getName() << " controlling the plane. Plane address: " << &myPlane << endl;
+        }
+
+        myPlane.operate(timestep);
+
+        if (myPlane.getAtSCE()) {
+            cout << "Plane is at SCE" << endl;
+        }
+
+        cout << "Plane position: " << myPlane.getPos() << " miles" << endl;
+    }
+    return 0;
 }
 
 int main() {
     q1();
+    //Question 5
+    FlightContainer flights;
+    double speed = 450; // Speed in mph
+    int timestep = 50; // Time step in seconds
+    int max_iterations = 1500; // Maximum number of iterations
+
+    Plane myPlane("SCE", "PHL", flights);
+    myPlane.setVel(speed);
+
+    for (int i = 0; i < max_iterations; ++i) {
+        myPlane.operate(timestep);
+
+        cout << "Plane position: " << myPlane.getPos() << " miles" << endl;
+    }
+
+    q7();
+    q8();
     return 0;
-}
+};
