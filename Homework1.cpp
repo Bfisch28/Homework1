@@ -221,26 +221,26 @@ public:
 void Plane::operate(double dt) {
     cout << "Velocity: " << vel << ", Time Step: " << dt << ", Position: " << pos << ", Distance: " << distance << endl;
 
-    if (pos + vel * dt < distance) {
-        pos += vel * dt;
-        at_SCE = false;
-        return; // End
-    }
+    pos += vel * dt; // Update the position of the plane
 
-    if (destination == "SCE") {
-        at_SCE = true;
-        swap(origin, destination);
-        distance = flights.getDistance(origin, destination); // Update distance
-        pos = 0.0;
+    if (pos >= distance) {
+        if (destination == "SCE") {
+            at_SCE = true;
+        }
+        else {
+            // Update the state of the plane when it reaches its destination
+            swap(origin, destination);
+            distance = flights.getDistance(origin, destination); // Update distance
+            pos = 0.0;
+            at_SCE = (destination == "SCE"); // Check if destination is SCE
+        }
     }
-    else {
-        // Update the state of the plane when it reaches its destination
-        swap(origin, destination);
-        distance = flights.getDistance(origin, destination); // Update distance
-        pos = 0.0;
-        at_SCE = (destination == "SCE"); // Check if destination is SCE
+    else if (at_SCE) {
+        distance = flights.getDistance(origin, destination); // Update distance if still at SCE
     }
 }
+
+
 
 
 
@@ -385,7 +385,7 @@ int main() {
         cout << "Timestamp: " << timestamp << " seconds, Plane position: " << myPlane.getPos() << " miles" << endl;
     }
 
-    //q7();
+    q7();
     q8();
     return 0;
 }
