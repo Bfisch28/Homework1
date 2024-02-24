@@ -366,7 +366,7 @@ int q8() {
 
 
 int main() {
-    //q1();
+    q1();
     //Question 5
     FlightContainer flights;
     double speed = 450; // Speed in mph
