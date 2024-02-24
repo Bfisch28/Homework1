@@ -371,7 +371,7 @@ int main() {
     FlightContainer flights;
     double speed = 450; // Speed in mph
     int timestep = 50; // Time step in seconds
-    int max_iterations = 1500; // Maximum number of iterations
+    int max_iterations = 500; // Maximum number of iterations
 
     Plane myPlane("SCE", "PHL", flights);
     myPlane.setVel(speed);
